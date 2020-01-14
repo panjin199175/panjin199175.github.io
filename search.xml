@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>接口自动化测试</title>
+    <url>/2020/01/13/auto-interface-test/</url>
+    <content><![CDATA[<h1 id="自动化测试模型"><a href="#自动化测试模型" class="headerlink" title="自动化测试模型"></a><strong>自动化测试模型</strong></h1><p>自动化测试模型可以看作是自动化测试框架设计的思想，这里介绍4种模型：线性测试、模块化驱动测试、数据驱动测试、关键字驱动测试。<br>1.线性测试：每个测试脚本都是完整且独立的，且不产生依赖与调用，缺点显而易见，开发和维护成本很高<br>2.模块化驱动测试：借鉴了编程语言中模块的思想（比如Python的包），把重复的操作当作了独立的公共模块，当用例执行过程中需要用到这一模块操作时则被调用，这样就最大程度地消除了重复，从而提高了开发效率和可维护性。<br>3.数据驱动测试：顾名思义就是数据的改变从而驱动自动化测试的执行，就是数据的参数化，因为输入的数据不同从而引起输出结果的不同，实现数据与脚本的分离，进一步增强了脚本的复用性。<br>4.关键字驱动测试：就是在数据驱动的基础上，把“数据”换成“关键字”，通过关键字来引起测试结果的改变。</p>
+<h1 id="自动化接口框架设计"><a href="#自动化接口框架设计" class="headerlink" title="自动化接口框架设计"></a><strong>自动化接口框架设计</strong></h1><p>选用模型：数据驱动+关键字驱动+模块化驱动<br>设计理由：<br>1.使用数据驱动，实现数据与脚本分离的，增强脚本复用性<br>   2.使用关键字驱动，通过关键字来查找数据，可以使测试所需数据从单一文本转移，由多个文件存储数据，看起来不是很笨重<br>   3.使用模块化驱动，对数据的重复操作的功能可以写成公共模块，举例：对excel的操作数据模块，构造请求模块，发送测试报告邮件模块。<br>设计方案：<br>数据驱动+关键字驱动<br>包名：case_data<br>模块名称:interface.xlsx,case.json<br>取名为interface.xlsx的excel文件来存储测试用例,case.json文本存储关键字的值<br>字段设计：<br>1.case_id ：记录用例号<br>2.名称：case_id说明<br>3.url：请求地址<br>4.run：有两个值，yes 和 no,判断用例是否需要执行<br>5.请求方式：有GET 和 POST两个值，来判断使用哪一种请求方式<br>6.headers：由关键字驱动，其值存储在case.json文本中，headers为空，则表示不需要headers<br>7.cookie：有yes 和 no两个值，来判断是否需要携带cookie<br>8.依赖case：某些请求的headers或body中可能需要上一个请求的响应中的值，依赖case指出需要依赖哪一个case<br>9.返回依赖数据：指被依赖的case的字段，一般json格式的响应结果为嵌套式的dictionary，这里举例关键字：info.toke，<br>假设</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">respose=&#123;<span class="string">'data'</span>：<span class="string">'mini'</span>,</span><br><span class="line">	    infor:<span class="string">'&#123;</span></span><br><span class="line"><span class="string">                '</span>token<span class="string">':'</span>unknown<span class="string">',</span></span><br><span class="line"><span class="string">                 '</span>num<span class="string">':'</span><span class="number">3</span><span class="string">'</span></span><br><span class="line"><span class="string">          &#125;</span></span><br></pre></td></tr></table></figure>
+<p>我们要取的值为response[‘info’][‘token’]，由方法来实现<br>10.数据依赖字段：若该字段为：Authorization则’Authorization’:’response[‘infor’][‘token’]’，根据8，9，获取上一个请求响应中所需数据<br>11.依赖需要：此处取3个值，headers、data、空<br>headers：表示数据依赖放在headers的字典里<br>data，表示数据依赖放在body的字典里<br>空：表示不需要依赖数据<br>12 请求参数：body中的数据，由关键字驱动<br>13 预期结果：与实际结果相比较<br>14 实际结果：有3个值 pass 、fail、空，脚本运行前或run=no的用例该项为空，其值由响应结果和预期结果断言后写入excel所得<br>模块化驱动：<br>包名：tools<br>模块名称：operating_excel.py<br>前提：<br>1.学习python操作excel：<br><a href="https://www.cnblogs.com/zhoujie/p/python18.html" target="_blank" rel="noopener">https://www.cnblogs.com/zhoujie/p/python18.html</a><br>我们只要学会：<br>1.获取sheet的行数 sheet.nrows：即得到case个数，要减一，第一行不算<br>2.获取单元格的内容 sheet.cell_value(row,col)，获得参数的值</p>
+<p> 2.学习python写入已存在数据的eccel：<a href="http://blog.csdn.net/hqzxsc2006/article/details/51768351" target="_blank" rel="noopener">http://blog.csdn.net/hqzxsc2006/article/details/51768351</a><br>为什么是已存在：不然每次写入，都会把之前的内容清空。<br>模块名称：operating_json.py<br>由关键字驱动的真实值存储在json中，我们通过引入operating_excel模块<br>可以得到获取关键字的方法，然后通过oprating_json，可以由关键字得到真实的参数<br>前提：<br>学习对json的读操作：<a href="https://www.cnblogs.com/eejron/p/4708980.html" target="_blank" rel="noopener">https://www.cnblogs.com/eejron/p/4708980.html</a><br>我们只要学会读取json文件，读取后取值，json用法跟dictionary类似</p>
+<p>模块名称：sendmail.py<br>用例执行完毕后，可以向指定收件群体发送邮件，汇报接口测试成功率<br>可以设置成由接口错误来触发<br>前提：<br>学习使用smtplib发送邮件：<a href="https://www.cnblogs.com/houzhizhe/p/7458960.html" target="_blank" rel="noopener">https://www.cnblogs.com/houzhizhe/p/7458960.html</a><br>我们只要学会发送普通邮件就可以了<br>包名：request<br>模块名称：build_request.py<br>通过引入build_request模块获取构造请求的方法</p>
+<p>包名：data<br>模块名称：data_set.py<br>设计通用常量，定义sheet中每个字段中的所在列的值</p>
+<p>模块名称：data_get.py<br>通过引入data_get，我们可以得到sheet中的每个单元格的值<br>我们已经定义了operating_excel和operating_json的方法，从data_set中也知道了每个字段的所在列，我们就可以通过遍历每一行（row，col确定一个单元格内容），由operating_excel获取每个单元格的值，由operating_json通过关键字获取json文件中的值(operating_excel、operating_json、data_set是为data_get做辅助的）</p>
+<p>模块名称：dependent_case.py<br>设计：根据依赖case_id，读取该case_id所在行，将它的所有数据再读取一遍，构造请求，获取响应数据，根据依赖需要，最终获得依赖数据<br>包名：main<br>模块名称：run_test.py<br>真正执行的测试用例的模块，实现逻辑<br><a href="https://i.loli.net/2019/09/25/Fn5IJerquhLtafo.jpg" target="_blank" rel="noopener" title="逻辑图"><img src="https://i.loli.net/2019/09/25/Fn5IJerquhLtafo.jpg" alt="逻辑图" title="逻辑图"></a></p>
+<h1 id="Module-Tree"><a href="#Module-Tree" class="headerlink" title="Module Tree"></a>Module Tree</h1><p><a href="https://i.loli.net/2019/09/25/ZUbNESMtHy8rqXe.png" target="_blank" rel="noopener" title="项目工程树"><img src="https://i.loli.net/2019/09/25/ZUbNESMtHy8rqXe.png" alt="项目工程树" title="项目工程树"></a></p>
+<h5 id="谢谢观赏"><a href="#谢谢观赏" class="headerlink" title="谢谢观赏"></a>谢谢观赏</h5>]]></content>
+      <categories>
+        <category>接口测试</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/2020/01/13/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br><span class="line">hexo g</span><br><span class="line">gulp</span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure>
+
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+]]></content>
+  </entry>
+</search>

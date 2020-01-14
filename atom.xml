@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Bug博客</title>
+  
+  
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="https://panjin199175.github.io/"/>
+  <updated>2020-01-14T03:30:34.803Z</updated>
+  <id>https://panjin199175.github.io/</id>
+  
+  <author>
+    <name>Bug</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>接口自动化测试</title>
+    <link href="https://panjin199175.github.io/2020/01/13/auto-interface-test/"/>
+    <id>https://panjin199175.github.io/2020/01/13/auto-interface-test/</id>
+    <published>2020-01-13T13:25:33.000Z</published>
+    <updated>2020-01-14T03:30:34.803Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;自动化测试模型&quot;&gt;&lt;a href=&quot;#自动化测试模型&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="接口测试" scheme="https://panjin199175.github.io/categories/%E6%8E%A5%E5%8F%A3%E6%B5%8B%E8%AF%95/"/>
+    
+    
+      <category term="Python" scheme="https://panjin199175.github.io/tags/Python/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Hello World</title>
+    <link href="https://panjin199175.github.io/2020/01/13/hello-world/"/>
+    <id>https://panjin199175.github.io/2020/01/13/hello-world/</id>
+    <published>2020-01-13T13:13:13.161Z</published>
+    <updated>2020-01-14T08:21:36.348Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a
+        
+      
+    
+    </summary>
+    
+    
+    
+  </entry>
+  
+</feed>
