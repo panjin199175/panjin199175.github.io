@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://panjin199175.github.io/"/>
-  <updated>2020-01-14T03:30:34.803Z</updated>
+  <updated>2020-01-15T08:53:45.322Z</updated>
   <id>https://panjin199175.github.io/</id>
   
   <author>
@@ -15,6 +15,34 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>面试总结-接口自动化面试题</title>
+    <link href="https://panjin199175.github.io/blog/Interview-sharing.html"/>
+    <id>https://panjin199175.github.io/blog/Interview-sharing.html</id>
+    <published>2020-01-15T07:37:55.000Z</published>
+    <updated>2020-01-15T08:53:45.322Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;&lt;img src=&quot;https://i.loli.net/2020/01/15/25bjPOHnc1f9Mse.jpg&quot; alt=&quot;mianshi.JPG&quot;&gt;&lt;/p&gt;
+&lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="面试那些事" scheme="https://panjin199175.github.io/categories/%E9%9D%A2%E8%AF%95%E9%82%A3%E4%BA%9B%E4%BA%8B/"/>
+    
+    
+      <category term="面试" scheme="https://panjin199175.github.io/tags/%E9%9D%A2%E8%AF%95/"/>
+    
+  </entry>
   
   <entry>
     <title>接口自动化测试</title>
